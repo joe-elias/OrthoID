@@ -1,6 +1,17 @@
 library(shiny)
 library(dplyr)
 
+audio_folder<-'audio'
+
+audio_files<-list.files(audio_folder, pattern='\\.mp3$', full.names = FALSE)
+
+metadata<-data.frame(
+  filename=audio_files, 
+  species=gsub('_\\d+\\.mp3$', '', audio_files)
+)
+
+write.csv(metadata, 'audio_metadata.csv', row.names = FALSE)
+cat("CSV metadata file saved as audio_metadata.csv\n")
 
 metadata<-read.csv('audio.csv', stringsAsFactors = FALSE)
 
@@ -25,8 +36,6 @@ ui<-fluidPage(
 )
 
 server<-function(input, output, session){
-  
-  addResourcePath("audio", file.path(getwd(), "audio"))  # Absolute path
   quiz_data<-reactiveValues(file=NULL, species=NULL)
   
   # select a random file 
