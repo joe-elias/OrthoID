@@ -1,21 +1,16 @@
 library(shiny)
 library(dplyr)
 
-metadata<-read.csv('audio.csv', stringsAsFactors = FALSE)
+# Load metadata from CSV
+metadata <- read.csv('audio.csv', stringsAsFactors = FALSE)
 
-
-random_row<-metadata[sample(row(metadata), 1), ]
-random_file<-random_row$filename
-correct_species<-random_row$species
-common_name<-random_row$common
-
+# UI Section
 ui <- fluidPage(
   titlePanel('Ortho ID'), 
-  
   sidebarLayout(
     sidebarPanel(
       actionButton('new_test', 'Orthopterate!'), 
-      textInput('answer', "Answer:", value = "Gryllus rubens"),
+      selectInput('answer', "Choose the correct species:", choices = NULL), 
       actionButton('submit', 'Submit Answer'), 
       textOutput('feedback')
     ), 
@@ -25,37 +20,43 @@ ui <- fluidPage(
   )
 )
 
-server<-function(input, output, session){
-  quiz_data<-reactiveValues(file=NULL, species=NULL, common=NULL)
+# Server Section
+server <- function(input, output, session) {
+  quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL)
   
-  # select a random file 
+  # Select a random file and generate options
   observeEvent(input$new_test, {
-    selected<-metadata[sample(nrow(metadata), 1), ]
-    quiz_data$file<-selected$filename
-    quiz_data$species<-selected$species
-    quiz_data$common<-selected$common
+    selected <- metadata[sample(nrow(metadata), 1), ]
+    quiz_data$file <- selected$filename
+    quiz_data$species <- selected$species
+    quiz_data$common <- selected$common
+    
+    # Generate random incorrect species
+    incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 3)
+    all_options <- sample(c(quiz_data$species, incorrect_options)) # Shuffle options
+    
+    # Update the selectInput choices
+    updateSelectInput(session, 'answer', choices = all_options)
   })
   
-  # display audio player
-  output$audio_player<-renderUI({
+  # Display audio player
+  output$audio_player <- renderUI({
     req(quiz_data$file)
-    tags$audio(src=paste0('https://raw.githubusercontent.com/joe-elias/OrthoID/main/audio/', 
-                          quiz_data$file), type='audio/mp3', controls=NA)
+    tags$audio(src = paste0('https://raw.githubusercontent.com/joe-elias/OrthoID/main/audio/', 
+                            quiz_data$file), type = 'audio/mp3', controls = NA)
   })
   
-  # check answer
+  # Check answer
   observeEvent(input$submit, {
     req(input$answer, quiz_data$species)
-    if (tolower(input$answer)==tolower(quiz_data$species)){
-      output$feedback<-renderText(paste("correct!", quiz_data$species, ';', quiz_data$common))
+    if (tolower(input$answer) == tolower(quiz_data$species)) {
+      output$feedback <- renderText(paste("Correct!", quiz_data$species, ';', quiz_data$common))
     } else {
-      output$feedback<-renderText(paste('wrong! correct answer = :' , 
-                                        quiz_data$species, ';', quiz_data$common))
+      output$feedback <- renderText(paste("Wrong! Correct answer: ", 
+                                          quiz_data$species, ';', quiz_data$common))
     }
   })
 }
 
+# Run the App
 shinyApp(ui = ui, server = server)
-
-# end 
-# next steps after we get the scientific and common to show - images of the species 
