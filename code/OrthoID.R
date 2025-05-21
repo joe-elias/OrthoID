@@ -4,8 +4,21 @@ library(dplyr)
 # Load metadata from CSV
 metadata <- read.csv('audio.csv', stringsAsFactors = FALSE)
 
-# UI Section
+# UI Section (I just added color)
 ui <- fluidPage(
+  tags$head(
+    tags$style(HTML("
+      body {
+        background-color: #e7f1dc;
+        font-family: 'Segoe UI', sans-serif;
+      }
+      .btn {
+        background-color: #a3c585;
+        color: white;
+      }
+    "))
+  ),
+  
   titlePanel('Ortho ID'), 
   sidebarLayout(
     sidebarPanel(
@@ -32,7 +45,7 @@ server <- function(input, output, session) {
     quiz_data$common <- selected$common
     
     # Generate random incorrect species
-    incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 3)
+    incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 4)
     all_options <- sample(c(quiz_data$species, incorrect_options)) # Shuffle options
     
     # Update the selectInput choices
