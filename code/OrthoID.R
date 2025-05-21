@@ -50,6 +50,7 @@ server <- function(input, output, session) {
     
     # Update the selectInput choices
     updateSelectInput(session, 'answer', choices = all_options)
+    output$feedback <- renderText("") #just resets feedback so it isn't on for next question
   })
   
   # Display audio player
