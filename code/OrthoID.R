@@ -1,3 +1,9 @@
+#Things I want to work to add in the future
+# Style ot the cricket and katydid buttons
+#Have it so when you click on cricket button you could scroll down to the one you wanna here and click submit and hear it
+#Pictures of the species
+#Maybe a hint button that shows the wavelength but idk how we would do that
+
 library(shiny)
 library(dplyr)
 
@@ -24,7 +30,7 @@ ui <- fluidPage(
   sidebarLayout(
     sidebarPanel(
 
-#Adding 2 more buttons (I may change their style later)
+#Adding 2 more buttons
       actionButton("cricket", "Cricket"),
       actionButton("katydid", "Katydid"),
       
@@ -93,6 +99,7 @@ server <- function(input, output, session) {
     } else {
       output$feedback <- renderText(paste("Wrong! Correct answer: ", 
                                           quiz_data$species, ';', quiz_data$common))
+    
     }
   })
 }
