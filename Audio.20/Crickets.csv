@@ -1,32 +1,31 @@
 filename,species,common 
-cricket/northmole.mp3,Neocurtilla hexadactyla,Northern mole cricket
-cricket/southmole.mp3,Neoscapteriscus borellii,Southern mole cricket
-cricket/shorttail.mp3,Anurogryllus arboreus,Common short-tailed cricket
-cricket/housecricket.mp3,Acheta domesticus,House cricket
-cricket/southwood.mp3,Gryllus fultoni,Southern wood cricket
-cricket/southefield.mp3,Gryllus rubens,Southeastern field cricket
-cricket/southefasttrilling.mp3,Gryllus texensis,Southeast fast trilling cricket
-cricket/easternstriped.mp3,Miogryllus saussurei,Eastern striped cricket
-cricket/japaneseburrowing.mp3,Velarifictorus micado,Japanese burrowing cricket
-cricket/restlessbush.mp3,Hapithus agitator,Restless bush cricket
-cricket/jumpingbush.mp3,Orocharis saltator,Jumping bush cricket
-cricket/syncopatedscaly.mp3,Cycloptilum comprehendens,Syncopated scaly cricket
-cricket/scudder.mp3,Cycloptilum squamosum,Scudder’s scaly cricket
-cricket/forectscaly.mp3,Cycloptilum trigonipalpum,Forest scaly cricket 
-cricket/greyground.mp3,Allonemobius griseus,Gray ground cricket
-cricket/choctawgro.mp3,Allonemobius shalontaki,Choctaw ground cricket
-cricket/carolinaground.mp3,Eunemobius carolinus,Carolina ground cricket 
-cricket/cubanground.mp3,Neonemobius cubensis,Cuban ground cricket
-cricket/mormonground.mp3,Neonemobius mormonius,Mormon ground cricket
-cricket/twospottedtree.mp3,Neoxabea bipunctata,Two-spotted tree cricket
-cricket/prarietree.mp3,Oecanthus argentinus,Prairie tree cricket
-cricket/fastcalling.mp3,Oecanthus celerinictus,Fast-calling tree cricket
-cricket/Davis's.mp3,Oecanthus exclamationis,Davis’s tree cricket
-cricket/snowytree.mp3,Oecanthus fultoni,Snowy tree cricket
-cricket/broadwinged.mp3,Oecanthus latipennis,Broad-winged tree cricket
-cricket/narrowwinged.mp3,Oecanthus niveus,Narrow-winged tree cricket
-cricket/fourspottedtree.mp3,Oecanthus quadripunctatus,Four-spotted tree cricket
-cricket/Say's.mp3,Anaxipha exigua,Say’s trig
-cricket/pinkspotted.mp3,Anaxipha rosamacula,Pink-spotted trig
+northmole.mp3,Neocurtilla hexadactyla,Northern mole cricket
+southmole.mp3,Neoscapteriscus borellii,Southern mole cricket
+shorttail.mp3,Anurogryllus arboreus,Common short-tailed cricket
+housecricket.mp3,Acheta domesticus,House cricket
+southwood.mp3,Gryllus fultoni,Southern wood cricket
+southefield.mp3,Gryllus rubens,Southeastern field cricket
+southefasttrilling.mp3,Gryllus texensis,Southeast fast trilling cricket
+easternstriped.mp3,Miogryllus saussurei,Eastern striped cricket
+japaneseburrowing.mp3,Velarifictorus micado,Japanese burrowing cricket
+restlessbush.mp3,Hapithus agitator,Restless bush cricket
+jumpingbush.mp3,Orocharis saltator,Jumping bush cricket
+syncopatedscaly.mp3,Cycloptilum comprehendens,Syncopated scaly cricket
+scudder.mp3,Cycloptilum squamosum,Scudderâ€™s scaly cricket
+forectscaly.mp3,Cycloptilum trigonipalpum,Forest scaly cricket 
+greyground.mp3,Allonemobius griseus,Gray ground cricket
+choctawgro.mp3,Allonemobius shalontaki,Choctaw ground cricket
+carolinaground.mp3,Eunemobius carolinus,Carolina ground cricket cricket/cubanground.mp3,Neonemobius cubensis,Cuban ground cricket
+mormonground.mp3,Neonemobius mormonius,Mormon ground cricket
+twospottedtree.mp3,Neoxabea bipunctata,Two-spotted tree cricket
+prarietree.mp3,Oecanthus argentinus,Prairie tree cricket
+fastcalling.mp3,Oecanthus celerinictus,Fast-calling tree cricket
+Davis's.mp3,Oecanthus exclamationis,Davisâ€™s tree cricket
+snowytree.mp3,Oecanthus fultoni,Snowy tree cricket
+broadwinged.mp3,Oecanthus latipennis,Broad-winged tree cricket
+narrowwinged.mp3,Oecanthus niveus,Narrow-winged tree cricket
+fourspottedtree.mp3,Oecanthus quadripunctatus,Four-spotted tree cricket
+Say's.mp3,Anaxipha exigua,Sayâ€™s trig
+pinkspotted.mp3,Anaxipha rosamacula,Pink-spotted trig
 cricket/slowtinkling.mp3,Anaxipha tinnulenta,Slow-tinkling trig
 cricket/columbian.mp3,Cyrtoxipha columbiana,Columbian trig
