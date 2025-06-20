@@ -1,8 +1,15 @@
+#Things I want to work to add in the future
+# Style ot the cricket and katydid buttons
+#Have it so when you click on cricket button you could scroll down to the one you wanna here and click submit and hear it
+#Pictures of the species
+#Maybe a hint button that shows the wavelength but idk how we would do that
+
 library(shiny)
 library(dplyr)
 
-# Load metadata from CSV
-metadata <- read.csv('audio.csv', stringsAsFactors = FALSE)
+# Load metadata from CSV (I decided to make 2 seperate csv's for crickets and katydids)
+cricket <- read.csv("Crickets.csv", stringsAsFactors = FALSE)
+katydid <- read.csv("Katydid.csv", stringsAsFactors = FALSE)
 
 # UI Section (I just added color)
 ui <- fluidPage(
@@ -16,15 +23,20 @@ ui <- fluidPage(
         background-color: #a3c585;
         color: white;
       }
-    "))
+  ")),    
   ),
   
   titlePanel('Ortho ID'), 
   sidebarLayout(
     sidebarPanel(
-      actionButton('new_test', 'Orthopterate!'), 
+
+#Adding 2 more buttons
+      actionButton("cricket", "Cricket"),
+      actionButton("katydid", "Katydid"),
+      
+      actionButton("new_test", "Orthopterate!"),
       selectInput('answer', "Choose the correct species:", choices = NULL), 
-      actionButton('submit', 'Submit Answer'), 
+      actionButton('submit', 'Submit'), 
       textOutput('feedback')
     ), 
     mainPanel(
@@ -35,10 +47,27 @@ ui <- fluidPage(
 
 # Server Section
 server <- function(input, output, session) {
-  quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL)
-  
+  quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL, group=NULL)
+
+  # Cricket button
+  observeEvent(input$cricket, {
+    quiz_data$group <- "cricket"
+    updateSelectInput(session, 'answer', choices = unique(cricket$species))#Quite literally took me FOREVER to do
+    output$audio_player <- renderUI(NULL)  # Clear audio
+  })
+
+  # Katydid button
+  observeEvent(input$katydid, {
+    quiz_data$group <- "katydid"
+    updateSelectInput(session, 'answer', choices = unique(katydid$species))
+    output$audio_player <- renderUI(NULL)  # Clear audio
+  })
+
   # Select a random file and generate options
   observeEvent(input$new_test, {
+    req(quiz_data$group) #makes sure cricket or katydid is selected before continuing
+    metadata<-if(quiz_data$group=="cricket")cricket else katydid #if else statment so determine which one is being used
+      
     selected <- metadata[sample(nrow(metadata), 1), ]
     quiz_data$file <- selected$filename
     quiz_data$species <- selected$species
@@ -51,15 +80,17 @@ server <- function(input, output, session) {
     # Update the selectInput choices
     updateSelectInput(session, 'answer', choices = all_options)
     output$feedback <- renderText("") #just resets feedback so it isn't on for next question
-  })
-  
+    
   # Display audio player
-  output$audio_player <- renderUI({
-    req(quiz_data$file)
-    tags$audio(src = paste0('https://raw.githubusercontent.com/joe-elias/OrthoID/main/audio/', 
-                            quiz_data$file), type = 'audio/mp3', controls = NA)
+    output$audio_player <- renderUI({
+      req(quiz_data$file)
+
+    #we can change this back later
+      tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              quiz_data$file), type = 'audio/mp3', controls = NA) 
+    })
   })
-  
+
   # Check answer
   observeEvent(input$submit, {
     req(input$answer, quiz_data$species)
@@ -68,6 +99,7 @@ server <- function(input, output, session) {
     } else {
       output$feedback <- renderText(paste("Wrong! Correct answer: ", 
                                           quiz_data$species, ';', quiz_data$common))
+    
     }
   })
 }
