@@ -1,8 +1,7 @@
 #Things I want to work to add in the future
 # Style ot the cricket and katydid buttons
 #Have it so when you click on cricket button you could scroll down to the one you wanna here and click submit and hear it
-#Pictures of the species
-#Maybe a hint button that shows the wavelength but idk how we would do that
+#Maybe a hint button that shows a picture of the species
 
 library(shiny)
 library(dplyr)
@@ -40,7 +39,8 @@ ui <- fluidPage(
       textOutput('feedback')
     ), 
     mainPanel(
-      uiOutput('audio_player')
+      uiOutput('audio_player'),
+      uiOutput('wave_displayer')
     )
   )
 )
@@ -54,6 +54,7 @@ server <- function(input, output, session) {
     quiz_data$group <- "cricket"
     updateSelectInput(session, 'answer', choices = unique(cricket$species))#Quite literally took me FOREVER to do
     output$audio_player <- renderUI(NULL)  # Clear audio
+    output$wave_displayer <- renderUI(NULL)
   })
 
   # Katydid button
@@ -61,6 +62,7 @@ server <- function(input, output, session) {
     quiz_data$group <- "katydid"
     updateSelectInput(session, 'answer', choices = unique(katydid$species))
     output$audio_player <- renderUI(NULL)  # Clear audio
+    output$wave_displayer <- renderUI(NULL)
   })
 
   # Select a random file and generate options
@@ -72,6 +74,7 @@ server <- function(input, output, session) {
     quiz_data$file <- selected$filename
     quiz_data$species <- selected$species
     quiz_data$common <- selected$common
+    uiz_data$wave <- selected$Wavelength
     
     # Generate random incorrect species
     incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 4)
@@ -89,8 +92,15 @@ server <- function(input, output, session) {
       tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
                               quiz_data$file), type = 'audio/mp3', controls = NA) 
     })
-  })
+  # Wavelength
+    output$wave_displayer <- renderUI({
+      req(quiz_data$wave)
 
+    #we can change this back later
+      tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              quiz_data$wave), type = 'wave/png', height="300px", width="500px") 
+  })
+})
   # Check answer
   observeEvent(input$submit, {
     req(input$answer, quiz_data$species)
