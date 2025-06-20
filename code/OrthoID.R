@@ -74,7 +74,7 @@ server <- function(input, output, session) {
     quiz_data$file <- selected$filename
     quiz_data$species <- selected$species
     quiz_data$common <- selected$common
-    uiz_data$wave <- selected$Wavelength
+    quiz_data$wave <- selected$Wavelength
     
     # Generate random incorrect species
     incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 4)
