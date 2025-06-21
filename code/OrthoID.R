@@ -1,6 +1,7 @@
 #Things I want to work to add in the future
 # Style ot the cricket and katydid buttons
 #Have it so when you click on cricket button you could scroll down to the one you wanna here and click submit and hear it
+#the images are blurry I wanna go through and maybe put in new pics
 
 library(shiny)
 library(dplyr)
@@ -105,7 +106,7 @@ server <- function(input, output, session) {
 
     #we can change this back later
       tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                              quiz_data$wave), type = 'wave/png', height="300px", width="500px") 
+                              quiz_data$wave), type = 'wave/png', height="100px", width="300px") 
   })
 })
   # Check answer
@@ -124,7 +125,7 @@ server <- function(input, output, session) {
     req(quiz_data$hint)
     output$image_displayer <- renderUI({
     tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                          quiz_data$hint), type = 'img/jpg', height="300px", width="500px") 
+                          quiz_data$hint), type = 'img/jpg', height="200px", width="300px") 
   })
   })
 }
