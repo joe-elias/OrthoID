@@ -1,7 +1,7 @@
 #Things I want to work to add in the future
 # Style ot the cricket and katydid buttons
 #Have it so when you click on cricket button you could scroll down to the one you wanna here and click submit and hear it
-#Maybe a hint button that shows a picture of the species
+#the images are blurry I wanna go through and maybe put in new pics
 
 library(shiny)
 library(dplyr)
@@ -36,11 +36,15 @@ ui <- fluidPage(
       actionButton("new_test", "Orthopterate!"),
       selectInput('answer', "Choose the correct species:", choices = NULL), 
       actionButton('submit', 'Submit'), 
+      
+#Added a hint button 
+      actionButton('hint','Hint'),
       textOutput('feedback')
     ), 
     mainPanel(
       uiOutput('audio_player'),
-      uiOutput('wave_displayer')
+      uiOutput('wave_displayer'),
+      uiOutput('image_displayer')
     )
   )
 )
@@ -55,6 +59,7 @@ server <- function(input, output, session) {
     updateSelectInput(session, 'answer', choices = unique(cricket$species))#Quite literally took me FOREVER to do
     output$audio_player <- renderUI(NULL)  # Clear audio
     output$wave_displayer <- renderUI(NULL)
+    output$image_displayer <- renderUI(NULL)
   })
 
   # Katydid button
@@ -63,6 +68,7 @@ server <- function(input, output, session) {
     updateSelectInput(session, 'answer', choices = unique(katydid$species))
     output$audio_player <- renderUI(NULL)  # Clear audio
     output$wave_displayer <- renderUI(NULL)
+    output$image_displayer <- renderUI(NULL)
   })
 
   # Select a random file and generate options
@@ -75,6 +81,7 @@ server <- function(input, output, session) {
     quiz_data$species <- selected$species
     quiz_data$common <- selected$common
     quiz_data$wave <- selected$Wavelength
+    quiz_data$hint <- selected$Images
     
     # Generate random incorrect species
     incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 4)
@@ -83,6 +90,7 @@ server <- function(input, output, session) {
     # Update the selectInput choices
     updateSelectInput(session, 'answer', choices = all_options)
     output$feedback <- renderText("") #just resets feedback so it isn't on for next question
+    output$image_displayer <- renderUI("")
     
   # Display audio player
     output$audio_player <- renderUI({
@@ -98,7 +106,7 @@ server <- function(input, output, session) {
 
     #we can change this back later
       tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                              quiz_data$wave), type = 'wave/png', height="300px", width="500px") 
+                              quiz_data$wave), type = 'wave/png', height="100px", width="300px") 
   })
 })
   # Check answer
@@ -111,6 +119,14 @@ server <- function(input, output, session) {
                                           quiz_data$species, ';', quiz_data$common))
     
     }
+  })
+  #HINT BUTTON :)
+  observeEvent(input$hint, {
+    req(quiz_data$hint)
+    output$image_displayer <- renderUI({
+    tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                          quiz_data$hint), type = 'img/jpg', height="200px", width="300px") 
+  })
   })
 }
 
