@@ -1,8 +1,4 @@
-#Things I want to work to add in the future
-# Style ot the cricket and katydid buttons
-#Have it so when you click on cricket button you could scroll down to the one you wanna here and click submit and hear it
-#the images are blurry I wanna go through and maybe put in new pics
-
+# shiny app to learn and reference songs of Orthopterans in Eastern Texas
 library(shiny)
 library(dplyr)
 
@@ -10,49 +6,72 @@ library(dplyr)
 cricket <- read.csv("Crickets.csv", stringsAsFactors = FALSE)
 katydid <- read.csv("Katydid.csv", stringsAsFactors = FALSE)
 
-# UI Section (I just added color)
-ui <- fluidPage(
-  tags$head(
-    tags$style(HTML("
-      body {
-        background-color: #e7f1dc;
-        font-family: 'Segoe UI', sans-serif;
-      }
-      .btn {
-        background-color: #a3c585;
-        color: white;
-      }
-  ")),    
+# UI ---------------------------------------------------------------------------
+ui <- navbarPage(
+  title = 'Ortho ID',
+  tabPanel("Quiz",
+           fluidPage(
+             tags$head(
+               tags$style(HTML("
+          body {
+            background-color: #e7f1dc;
+            font-family: 'Segoe UI', sans-serif;
+          }
+          .btn {
+            background-color: #a3c585;
+            color: white;
+          }
+        "))
+             ),
+             
+## side bar layout----
+             sidebarLayout(
+               sidebarPanel(
+                 actionButton("cricket", "Cricket"),
+                 actionButton("katydid", "Katydid"),
+                 actionButton("new_test", "Orthopterate!"),
+                 selectInput('answer', "Choose the correct species:", choices = NULL), 
+                 actionButton('submit', 'Submit'), 
+                 actionButton('hint','Hint'),
+                 textOutput('feedback')
+               ), 
+#main panel ----
+               mainPanel(
+                 uiOutput('audio_player'),
+                 uiOutput('wave_displayer'),
+                 uiOutput('image_displayer')
+               )
+             )
+           )
   ),
-  
-  titlePanel('Ortho ID'), 
-  sidebarLayout(
-    sidebarPanel(
-
-#Adding 2 more buttons
-      actionButton("cricket", "Cricket"),
-      actionButton("katydid", "Katydid"),
-      
-      actionButton("new_test", "Orthopterate!"),
-      selectInput('answer', "Choose the correct species:", choices = NULL), 
-      actionButton('submit', 'Submit'), 
-      
-#Added a hint button 
-      actionButton('hint','Hint'),
-      textOutput('feedback')
-    ), 
-    mainPanel(
-      uiOutput('audio_player'),
-      uiOutput('wave_displayer'),
-      uiOutput('image_displayer')
-    )
-  )
+## about panel ----
+  tabPanel("About", 
+           fluidPage(
+             img(src="https://cdn.vectorstock.com/i/500p/78/79/bush-katydid-north-spiders-2-vector-53807879.jpg", 
+                 height="300px", width="400px"),
+             h3("Welcome to Ortho ID!"),
+             p("This app helps users identify Orthoptera species using sound and image cues."),
+             p("recordings and pictures are specific to Eastern Texas")
+           )
+  ), 
+# Orthopteran Guide ----
+  tabPanel("Guide", 
+           fluidPage(
+           h3("A Guide to Common Crickets and Katydids of Eastern Texas"), 
+           uiOutput("Guide"), 
+           fluidRow(
+             column(6, h4("crickets"), tableOutput("crickets")), 
+             column(6, h4("katydids"), tableOutput("katydids"))
+           )
+           )), 
 )
 
-# Server Section
-server <- function(input, output, session) {
-  quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL, group=NULL)
 
+# Server Section ---------------------------------------------------------------
+server <- function(input, output, session) {
+ ## QUIZ ----
+   quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL, group=NULL)
+  
   # Cricket button
   observeEvent(input$cricket, {
     quiz_data$group <- "cricket"
@@ -61,7 +80,7 @@ server <- function(input, output, session) {
     output$wave_displayer <- renderUI(NULL)
     output$image_displayer <- renderUI(NULL)
   })
-
+  
   # Katydid button
   observeEvent(input$katydid, {
     quiz_data$group <- "katydid"
@@ -70,12 +89,12 @@ server <- function(input, output, session) {
     output$wave_displayer <- renderUI(NULL)
     output$image_displayer <- renderUI(NULL)
   })
-
+  
   # Select a random file and generate options
   observeEvent(input$new_test, {
     req(quiz_data$group) #makes sure cricket or katydid is selected before continuing
     metadata<-if(quiz_data$group=="cricket")cricket else katydid #if else statment so determine which one is being used
-      
+    
     selected <- metadata[sample(nrow(metadata), 1), ]
     quiz_data$file <- selected$filename
     quiz_data$species <- selected$species
@@ -92,23 +111,23 @@ server <- function(input, output, session) {
     output$feedback <- renderText("") #just resets feedback so it isn't on for next question
     output$image_displayer <- renderUI("")
     
-  # Display audio player
+    # Display audio player
     output$audio_player <- renderUI({
       req(quiz_data$file)
-
-    #we can change this back later
+      
+      #we can change this back later
       tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
                               quiz_data$file), type = 'audio/mp3', controls = NA) 
     })
-  # Wavelength
+    # Wavelength
     output$wave_displayer <- renderUI({
       req(quiz_data$wave)
-
-    #we can change this back later
+      
+      #we can change this back later
       tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                              quiz_data$wave), type = 'wave/png', height="100px", width="300px") 
+                            quiz_data$wave), type = 'wave/png', height="100px", width="300px") 
+    })
   })
-})
   # Check answer
   observeEvent(input$submit, {
     req(input$answer, quiz_data$species)
@@ -117,16 +136,20 @@ server <- function(input, output, session) {
     } else {
       output$feedback <- renderText(paste("Wrong! Correct answer: ", 
                                           quiz_data$species, ';', quiz_data$common))
-    
+      
     }
   })
   #HINT BUTTON :)
   observeEvent(input$hint, {
     req(quiz_data$hint)
     output$image_displayer <- renderUI({
-    tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                          quiz_data$hint), type = 'img/jpg', height="200px", width="300px") 
+      tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                            quiz_data$hint), type = 'img/jpg', height="200px", width="300px") 
+    })
   })
+## Guide Panel ----
+  renderPrint({
+    quiz_data
   })
 }
 
