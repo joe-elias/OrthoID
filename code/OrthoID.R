@@ -14,28 +14,57 @@ ui <- navbarPage(
              tags$head(
                tags$style(HTML("
           body {
-            background-color: #e7f1dc;
-            font-family: 'Segoe UI', sans-serif;
-          }
-          .btn {
-            background-color: #a3c585;
-            color: white;
-          }
+        background-color: #e7f1dc;
+        font-family: 'Segoe UI', sans-serif;
+     }
+       #cricket, #katydid {
+      background-color: #6c9a8b;
+      color: white;
+    }
+       #cricket:hover, #katydid:hover {
+      background-color: #55877c;
+    }
+      .btn {
+        background-color: #a3c585;
+        color: white;
+      }
+      
+      .btn:hover{
+        background-color: #99b878;
+        color: white;
+      }
+      #hint {
+        background-color: #f39c12;
+        color: white;
+      }
+      #hint:hover {
+        background-color: #e67e22;
+        color: white;
+      }
+      #submit {
+        background-color: #acd8a7;
+        color: white;
+      }
+      #submit:hover {
+        background-color: #8bca84;
+        color: white;
+      }
         "))
              ),
              
-## side bar layout----
+             ## side bar layout----
              sidebarLayout(
                sidebarPanel(
                  actionButton("cricket", "Cricket"),
                  actionButton("katydid", "Katydid"),
                  actionButton("new_test", "Orthopterate!"),
-                 selectInput('answer', "Choose the correct species:", choices = NULL), 
+                 selectInput('species_answer', "Choose the correct scientific name:", choices = NULL), 
+                 selectInput('common_answer', "Choose the correct common name:", choices = NULL),
                  actionButton('submit', 'Submit'), 
                  actionButton('hint','Hint'),
                  textOutput('feedback')
                ), 
-#main panel ----
+               #main panel ----
                mainPanel(
                  uiOutput('audio_player'),
                  uiOutput('wave_displayer'),
@@ -44,7 +73,7 @@ ui <- navbarPage(
              )
            )
   ),
-## about panel ----
+  ## about panel ----
   tabPanel("About", 
            fluidPage(
              img(src="https://cdn.vectorstock.com/i/500p/78/79/bush-katydid-north-spiders-2-vector-53807879.jpg", 
@@ -54,40 +83,42 @@ ui <- navbarPage(
              p("recordings and pictures are specific to Eastern Texas")
            )
   ), 
-# Orthopteran Guide ----
+  # Orthopteran Guide ----
   tabPanel("Guide", 
            fluidPage(
-           h3("A Guide to Common Crickets and Katydids of Eastern Texas"), 
-           uiOutput("Guide"), 
-           fluidRow(
-             column(6, h4("crickets"), tableOutput("crickets")), 
-             column(6, h4("katydids"), tableOutput("katydids"))
-           )
+             h3("A Guide to Common Crickets and Katydids of Eastern Texas"), 
+             uiOutput("Guide"), 
+             fluidRow(
+               column(6, h4("crickets"), tableOutput("crickets")), 
+               column(6, h4("katydids"), tableOutput("katydids"))
+             )
            )), 
 )
 
 
 # Server Section ---------------------------------------------------------------
 server <- function(input, output, session) {
- ## QUIZ ----
-   quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL, group=NULL)
+  ## QUIZ ----
+  quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL, group=NULL)
   
   # Cricket button
   observeEvent(input$cricket, {
     quiz_data$group <- "cricket"
-    updateSelectInput(session, 'answer', choices = unique(cricket$species))#Quite literally took me FOREVER to do
+    updateSelectInput(session, 'species_answer', choices = unique(cricket$species))
     output$audio_player <- renderUI(NULL)  # Clear audio
     output$wave_displayer <- renderUI(NULL)
     output$image_displayer <- renderUI(NULL)
+    updateActionButton(session, "new_test", disabled = FALSE)  #bug fix
   })
   
   # Katydid button
   observeEvent(input$katydid, {
     quiz_data$group <- "katydid"
-    updateSelectInput(session, 'answer', choices = unique(katydid$species))
+    updateSelectInput(session, 'species_answer', choices = unique(katydid$species))
     output$audio_player <- renderUI(NULL)  # Clear audio
     output$wave_displayer <- renderUI(NULL)
     output$image_displayer <- renderUI(NULL)
+    updateActionButton(session, "new_test", disabled = FALSE)
   })
   
   # Select a random file and generate options
@@ -106,8 +137,12 @@ server <- function(input, output, session) {
     incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 4)
     all_options <- sample(c(quiz_data$species, incorrect_options)) # Shuffle options
     
+    incorrect_common <- sample(metadata$common[metadata$common != quiz_data$common], 4)
+    all_common <- sample(c(quiz_data$common, incorrect_common)) # Shuffle options
+    
     # Update the selectInput choices
-    updateSelectInput(session, 'answer', choices = all_options)
+    updateSelectInput(session, 'species_answer', choices = all_options)
+    updateSelectInput(session, 'common_answer', choices = all_common)
     output$feedback <- renderText("") #just resets feedback so it isn't on for next question
     output$image_displayer <- renderUI("")
     
@@ -130,12 +165,18 @@ server <- function(input, output, session) {
   })
   # Check answer
   observeEvent(input$submit, {
-    req(input$answer, quiz_data$species)
-    if (tolower(input$answer) == tolower(quiz_data$species)) {
+    req(input$species_answer, quiz_data$species,input$common_answer, quiz_data$common)
+    
+    if (tolower(input$species_answer) == tolower(quiz_data$species) && 
+        tolower(input$common_answer) == tolower(quiz_data$common)) {
       output$feedback <- renderText(paste("Correct!", quiz_data$species, ';', quiz_data$common))
-    } else {
-      output$feedback <- renderText(paste("Wrong! Correct answer: ", 
-                                          quiz_data$species, ';', quiz_data$common))
+    } 
+    else if(tolower(input$species_answer) == tolower(quiz_data$species) || 
+            tolower(input$common_answer) == tolower(quiz_data$common) ){
+      output$feedback <- renderText(paste("Almost! Correct answer: ", quiz_data$species, ';', quiz_data$common))
+    }
+    else {
+      output$feedback <- renderText(paste("Wrong! Correct answer: ", quiz_data$species, ';', quiz_data$common))
       
     }
   })
@@ -147,7 +188,7 @@ server <- function(input, output, session) {
                             quiz_data$hint), type = 'img/jpg', height="200px", width="300px") 
     })
   })
-## Guide Panel ----
+  ## Guide Panel ----
   renderPrint({
     quiz_data
   })
