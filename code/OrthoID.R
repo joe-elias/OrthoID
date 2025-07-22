@@ -159,6 +159,7 @@ server <- function(input, output, session) {
     quiz_data$common <- selected$common
     quiz_data$wave <- selected$Wavelength
     quiz_data$hint <- selected$Images
+    quiz_data$map <- selected$Location
     
     # Generate random incorrect species
     incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 4)
@@ -229,17 +230,14 @@ server <- function(input, output, session) {
           tagList(
             h3(selected$common),
             h4(selected$species),
-            tags$img(
-              src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Images),
-              height = "200px", width = "300px"
+            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                            selected$Images), type = 'img/jpg', height="200px", width="300px")
             ),
-            tags$audio(
-              src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$filename),
-              type = "audio/mp3", controls = NA
+            tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$filename), type = 'audio/mp3', controls = NA) 
             ),
-            tags$img(
-              src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Location),
-              height = "300px", width = "300px"
+            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                            selected$Location), type = 'img/jpg', height="200px", width="300px") 
             )
           )
         })
@@ -253,17 +251,14 @@ server <- function(input, output, session) {
         tagList(
           h3(selected$common),
           h4(selected$species),
-          tags$img(
-            src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Images),
-            height = "200px", width = "300px"
-          ),
-          tags$audio(
-            src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$filename),
-            type = "audio/mp3", controls = NA
-          ),
-          tags$img(
-            src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Location),
-            height = "300px", width = "300px"
+            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                            selected$Images), type = 'img/jpg', height="200px", width="300px")
+            ),
+            tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$filename), type = 'audio/mp3', controls = NA) 
+            ),
+            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                            selected$Location), type = 'img/jpg', height="200px", width="300px") 
           )
         )
       })
