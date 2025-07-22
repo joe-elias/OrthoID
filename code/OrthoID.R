@@ -91,10 +91,10 @@ ui <- navbarPage(
              tags$h5("If you need help, click on", tags$strong(style="color: #6c9a8b","Hint")," to see a related image."),
              tags$h5(tags$strong(style="color: #6c9a8b", "For more information"), "click on", tags$strong(style="color: #6c9a8b","Guide")," and it will show you more about that orthopterate!."),
              tags$h3("Enjoy!", style = "color: #4c6e63")
-      )
+           )
   ),
   # Orthopteran Guide ----
- tabPanel("Guide", 
+  tabPanel("Guide", 
            fluidPage(
              h2("A Guide to Common Crickets and Katydids of Eastern Texas"), 
              uiOutput("Guide"), 
@@ -108,7 +108,7 @@ ui <- navbarPage(
                         choices = cricket$species
                       ),
                       uiOutput("cricket_pg")
-                      ), 
+               ), 
                column(6, 
                       h2("Katydids"), 
                       tableOutput("katydid"),
@@ -159,7 +159,6 @@ server <- function(input, output, session) {
     quiz_data$common <- selected$common
     quiz_data$wave <- selected$Wavelength
     quiz_data$hint <- selected$Images
-    quiz_data$map <- selected$Location
     
     # Generate random incorrect species
     incorrect_options <- sample(metadata$species[metadata$species != quiz_data$species], 4)
@@ -190,7 +189,7 @@ server <- function(input, output, session) {
       tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
                             quiz_data$wave), type = 'wave/png', height="100px", width="300px") 
     })
-  #Points
+    #Points
     output$Points <- renderText({paste(quiz_data$points)})
     
   })
@@ -222,50 +221,55 @@ server <- function(input, output, session) {
     })
   })
   ## Guide Panel ----
-    observeEvent(input$cricket_guide, { #
-        selected <- cricket[cricket$species == input$cricket_guide, ] #When a cricket is selected
-        
-        #creating the page
-        output$cricket_pg <- renderUI({
-          tagList(
-            h3(selected$common),
-            h4(selected$species),
-            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                            selected$Images), type = 'img/jpg', height="200px", width="300px")
-            ),
-            tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                              selected$filename), type = 'audio/mp3', controls = NA) 
-            ),
-            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                            selected$Location), type = 'img/jpg', height="200px", width="300px") 
-            )
-          )
-        })
-    })
-      
-    observeEvent(input$katydid_guide, {
-      selected <- katydid[katydid$species == input$katydid_guide, ]
-      
-      #creating the page                  --Just prints under dropdown
-      output$katydid_pg <- renderUI({
-        tagList(
-          h3(selected$common),
-          h4(selected$species),
-            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                            selected$Images), type = 'img/jpg', height="200px", width="300px")
-            ),
-            tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                              selected$filename), type = 'audio/mp3', controls = NA) 
-            ),
-            tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
-                            selected$Location), type = 'img/jpg', height="200px", width="300px") 
-          )
+  observeEvent(input$cricket_guide, { #
+    selected <- cricket[cricket$species == input$cricket_guide, ] #When a cricket is selected
+    
+    #creating the page
+    output$cricket_pg <- renderUI({
+      tagList(
+        h3(selected$common),
+        h4(selected$species),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Images), 
+                 type = 'img/jpg', height="200px", width="300px"
+        ),
+        tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                                selected$filename), 
+                   type = 'audio/mp3', controls = NA
+        ),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Location), 
+                 type = 'img/jpg', height="200px", width="300px" 
         )
-      })
+      )
     })
+  })
+  
+  observeEvent(input$katydid_guide, {
+    selected <- katydid[katydid$species == input$katydid_guide, ]
+    
+    #creating the page                  --Just prints under dropdown
+    output$katydid_pg <- renderUI({
+      tagList(
+        h3(selected$common),
+        h4(selected$species),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Images), 
+                 type = 'img/jpg', height="200px", width="300px"
+        ),
+        tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                                selected$filename), 
+                   type = 'audio/mp3', controls = NA
+        ),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Location), 
+                 type = 'img/jpg', height="200px", width="300px"
+        )
+      )
+    })
+  })
+  
+}
 
-  }
-  
-  # Run the App
-  shinyApp(ui = ui, server = server)
-  
+# Run the App
+shinyApp(ui = ui, server = server)
