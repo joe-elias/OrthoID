@@ -94,18 +94,35 @@ ui <- navbarPage(
       )
   ),
   # Orthopteran Guide ----
-  tabPanel("Guide", 
+ tabPanel("Guide", 
            fluidPage(
-             h3("A Guide to Common Crickets and Katydids of Eastern Texas"), 
+             h2("A Guide to Common Crickets and Katydids of Eastern Texas"), 
              uiOutput("Guide"), 
              fluidRow(
-               column(6, h4("crickets"), tableOutput("crickets")), 
-               column(6, h4("katydids"), tableOutput("katydids"))
-             )
-           )), 
-)
-
-
+               column(6,             #simply just draws from the csv and when selected plays the page
+                      h2("Crickets"), 
+                      tableOutput("crickets"),
+                      selectInput( #you can remane then radioButtons if you want but I like the selected style
+                        inputId = "cricket_guide", 
+                        label = "Select a species", 
+                        choices = cricket$species
+                      ),
+                      uiOutput("cricket_pg")
+                      ), 
+               column(6, 
+                      h2("Katydids"), 
+                      tableOutput("katydid"),
+                      selectInput( 
+                        inputId = "katydid_guide", 
+                        label = "Select a species", 
+                        choices = katydid$species 
+                      ),
+                      uiOutput("katydid_pg")
+               )
+             )  #I had so many errors with these parenthasis, do you know any way to just smush them all together?
+           )   
+  ) 
+)          
 # Server Section ---------------------------------------------------------------
 server <- function(input, output, session) {
   ## QUIZ ----
@@ -204,10 +221,56 @@ server <- function(input, output, session) {
     })
   })
   ## Guide Panel ----
-  renderPrint({
-    quiz_data
-  })
-}
+    observeEvent(input$cricket_guide, { #
+        selected <- cricket[cricket$species == input$cricket_guide, ] #When a cricket is selected
+        
+        #creating the page
+        output$cricket_pg <- renderUI({
+          tagList(
+            h3(selected$common),
+            h4(selected$species),
+            tags$img(
+              src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Images),
+              height = "200px", width = "300px"
+            ),
+            tags$audio(
+              src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$filename),
+              type = "audio/mp3", controls = NA
+            ),
+            tags$img(
+              src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Location),
+              height = "300px", width = "300px"
+            )
+          )
+        })
+    })
+      
+    observeEvent(input$katydid_guide, {
+      selected <- katydid[katydid$species == input$katydid_guide, ]
+      
+      #creating the page                  --Just prints under dropdown
+      output$katydid_pg <- renderUI({
+        tagList(
+          h3(selected$common),
+          h4(selected$species),
+          tags$img(
+            src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Images),
+            height = "200px", width = "300px"
+          ),
+          tags$audio(
+            src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$filename),
+            type = "audio/mp3", controls = NA
+          ),
+          tags$img(
+            src = paste0("https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/", selected$Location),
+            height = "300px", width = "300px"
+          )
+        )
+      })
+    })
 
-# Run the App
-shinyApp(ui = ui, server = server)
+  }
+  
+  # Run the App
+  shinyApp(ui = ui, server = server)
+  
