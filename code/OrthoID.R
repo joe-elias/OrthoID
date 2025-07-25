@@ -62,7 +62,9 @@ ui <- navbarPage(
                  selectInput('common_answer', "Choose the correct common name:", choices = NULL),
                  actionButton('submit', 'Submit'), 
                  actionButton('hint','Hint'),
-                 textOutput('feedback')
+                 textOutput('feedback'),
+                 tags$h4(tags$strong(style = "color: #4c6e63", "Points:")),
+                 textOutput("Points")
                ), 
                #main panel ----
                mainPanel(
@@ -78,28 +80,53 @@ ui <- navbarPage(
            fluidPage(
              img(src="https://cdn.vectorstock.com/i/500p/78/79/bush-katydid-north-spiders-2-vector-53807879.jpg", 
                  height="300px", width="400px"),
-             h3("Welcome to Ortho ID!"),
-             p("This app helps users identify Orthoptera species using sound and image cues."),
-             p("recordings and pictures are specific to Eastern Texas")
+             tags$h1(tags$strong( style = "color: #4c6e63","Welcome to Ortho ID!")),
+             tags$h4("This app helps users identify Orthoptera species using sound and image cues."),
+             tags$h4("Recordings and pictures are specific to ", tags$strong(style="color: #6c9a8b","Eastern Texas"), "!"),
+             
+             tags$h3("How to Play", style = "color: #4c6e63"),
+             tags$h5("To play the game, simply press either the", tags$strong(style="color: #6c9a8b","Cricket"),"or", tags$strong(style="color: #6c9a8b","Katydid"), "button then click", tags$strong(style="color: #6c9a8b","Orthopterate!")),
+             tags$h5("The ", tags$strong(style="color: #6c9a8b","audio recording"), "should show up with the ", tags$strong(style="color: #6c9a8b","wavelength"), "below."),
+             tags$h5("Guess both the ", tags$strong(style="color: #6c9a8b","scientific"), "and ", tags$strong(style="color: #6c9a8b","common names"), "from the dropdowns, when you're done click ", tags$strong(style="color: #6c9a8b","Submit"),"to check your answer."),
+             tags$h5("If you need help, click on", tags$strong(style="color: #6c9a8b","Hint")," to see a related image."),
+             tags$h5(tags$strong(style="color: #6c9a8b", "For more information"), "click on", tags$strong(style="color: #6c9a8b","Guide")," and it will show you more about that orthopterate!."),
+             tags$h3("Enjoy!", style = "color: #4c6e63")
            )
-  ), 
+  ),
   # Orthopteran Guide ----
   tabPanel("Guide", 
            fluidPage(
-             h3("A Guide to Common Crickets and Katydids of Eastern Texas"), 
+             h2("A Guide to Common Crickets and Katydids of Eastern Texas"), 
              uiOutput("Guide"), 
              fluidRow(
-               column(6, h4("crickets"), tableOutput("crickets")), 
-               column(6, h4("katydids"), tableOutput("katydids"))
-             )
-           )), 
-)
-
-
+               column(6,             #simply just draws from the csv and when selected plays the page
+                      h2("Crickets"), 
+                      tableOutput("crickets"),
+                      selectInput( #you can remane then radioButtons if you want but I like the selected style
+                        inputId = "cricket_guide", 
+                        label = "Select a species", 
+                        choices = cricket$species
+                      ),
+                      uiOutput("cricket_pg")
+               ), 
+               column(6, 
+                      h2("Katydids"), 
+                      tableOutput("katydid"),
+                      selectInput( 
+                        inputId = "katydid_guide", 
+                        label = "Select a species", 
+                        choices = katydid$species 
+                      ),
+                      uiOutput("katydid_pg")
+               )
+             )  #I had so many errors with these parenthasis, do you know any way to just smush them all together?
+           )   
+  ) 
+)          
 # Server Section ---------------------------------------------------------------
 server <- function(input, output, session) {
   ## QUIZ ----
-  quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL, group=NULL)
+  quiz_data <- reactiveValues(file = NULL, species = NULL, common = NULL, group=NULL, points=0)
   
   # Cricket button
   observeEvent(input$cricket, {
@@ -162,6 +189,9 @@ server <- function(input, output, session) {
       tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
                             quiz_data$wave), type = 'wave/png', height="100px", width="300px") 
     })
+    #Points
+    output$Points <- renderText({paste(quiz_data$points)})
+    
   })
   # Check answer
   observeEvent(input$submit, {
@@ -170,10 +200,12 @@ server <- function(input, output, session) {
     if (tolower(input$species_answer) == tolower(quiz_data$species) && 
         tolower(input$common_answer) == tolower(quiz_data$common)) {
       output$feedback <- renderText(paste("Correct!", quiz_data$species, ';', quiz_data$common))
+      quiz_data$points <- quiz_data$points + 2 #Adding points
     } 
     else if(tolower(input$species_answer) == tolower(quiz_data$species) || 
             tolower(input$common_answer) == tolower(quiz_data$common) ){
       output$feedback <- renderText(paste("Almost! Correct answer: ", quiz_data$species, ';', quiz_data$common))
+      quiz_data$points <- quiz_data$points + 1 #Half Credit
     }
     else {
       output$feedback <- renderText(paste("Wrong! Correct answer: ", quiz_data$species, ';', quiz_data$common))
@@ -189,9 +221,54 @@ server <- function(input, output, session) {
     })
   })
   ## Guide Panel ----
-  renderPrint({
-    quiz_data
+  observeEvent(input$cricket_guide, { #
+    selected <- cricket[cricket$species == input$cricket_guide, ] #When a cricket is selected
+    
+    #creating the page
+    output$cricket_pg <- renderUI({
+      tagList(
+        h3(selected$common),
+        h4(selected$species),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Images), 
+                 type = 'img/jpg', height="200px", width="300px"
+        ),
+        tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                                selected$filename), 
+                   type = 'audio/mp3', controls = NA
+        ),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Location), 
+                 type = 'img/jpg', height="200px", width="300px" 
+        )
+      )
+    })
   })
+  
+  observeEvent(input$katydid_guide, {
+    selected <- katydid[katydid$species == input$katydid_guide, ]
+    
+    #creating the page                  --Just prints under dropdown
+    output$katydid_pg <- renderUI({
+      tagList(
+        h3(selected$common),
+        h4(selected$species),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Images), 
+                 type = 'img/jpg', height="200px", width="300px"
+        ),
+        tags$audio(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                                selected$filename), 
+                   type = 'audio/mp3', controls = NA
+        ),
+        tags$img(src = paste0('https://raw.githubusercontent.com/JenniferSlater/OrthoID/main/Audio.20/', 
+                              selected$Location), 
+                 type = 'img/jpg', height="200px", width="300px"
+        )
+      )
+    })
+  })
+  
 }
 
 # Run the App

@@ -1,32 +1,32 @@
-filename,species,common ,Wavelength,Images
-northmole.mp3,Neocurtilla hexadactyla,Northern mole cricket,Wavelength/northmole.png,Images/northernmole.jpg
-southmole.mp3,Neoscapteriscus borellii,Southern mole cricket,Wavelength/southmole.png,Images/southernmole.jpg
-shorttail.mp3,Anurogryllus arboreus,Common short-tailed cricket,Wavelength/shorttail.png,Images/shorttail.jpg
-housecricket.mp3,Acheta domesticus,House cricket,Wavelength/housecricket.png,Images/housecricket.jpg
-southwood.mp3,Gryllus fultoni,Southern wood cricket,Wavelength/southwood.png,Images/southernwood.jpg
-southefield.mp3,Gryllus rubens,Southeastern field cricket,Wavelength/southefield.png,Images/southefield.jpg
-southefasttrilling.mp3,Gryllus texensis,Southeast fast trilling cricket,Wavelength/southefasttrilling.png,Images/southefasttrilling.jpg
-easternstriped.mp3,Miogryllus saussurei,Eastern striped cricket,Wavelength/easternstriped.png,Images/easternstriped.jpg
-japaneseburrowing.mp3,Velarifictorus micado,Japanese burrowing cricket,Wavelength/japaneseburrowing.png,Images/japaneseburrowing.jpg
-restlessbush.mp3,Hapithus agitator,Restless bush cricket,Wavelength/restlessbush.png,Images/restlessbush.jpg
-jumpingbush.mp3,Orocharis saltator,Jumping bush cricket,Wavelength/jumpingbush.png,Images/jumpingbush.jpg
-syncopatedscaly.mp3,Cycloptilum comprehendens,Syncopated scaly cricket,Wavelength/syncopatedscaly.png, Images/syncopatedscaly.jpg
-scudder.mp3,Cycloptilum squamosum,Scudder’s scaly cricket,Wavelength/scudder.png,Images/scudder.jpg
-forectscaly.mp3,Cycloptilum trigonipalpum,Forest scaly cricket ,Wavelength/forectscaly.png,Images/forestscaly.jpg
-greyground.mp3,Allonemobius griseus,Gray ground cricket,Wavelength/greyground.png,Images/greyground.jpg
-choctawgro.mp3,Allonemobius shalontaki,Choctaw ground cricket,Wavelength/choctawground.png,Images/choctaw.jpg
-carolinaground.mp3,Eunemobius carolinus,Carolina ground cricket ,Wavelength/carolineground.png,Images/carolina.jpg
-cubanground.mp3,Neonemobius cubensis,Cuban ground cricket,Wavelength/cubanground.png,Images/cubanground.jpg
-mormonground.mp3,Neonemobius mormonius,Mormon ground cricket,Wavelength/mormonground.png,Images/mormonground.jpg
-twospottedtree.mp3,Neoxabea bipunctata,Two-spotted tree cricket,Wavelength/twospottedtree.png,Images/twospottedtree.jpg
-prarietree.mp3,Oecanthus argentinus,Prairie tree cricket,Wavelength/prarietree.png,Images/prarietree.jpg
-fastcalling.mp3,Oecanthus celerinictus,Fast-calling tree cricket,Wavelength/fastcalling.png,Images/fastcalling.jpg
-Davis's.mp3,Oecanthus exclamationis,Davis’s tree cricket,Wavelength/Davis's.png,Images/Davis's.jpg
-snowytree.mp3,Oecanthus fultoni,Snowy tree cricket,Wavelength/snowytree.png,Images/snowytree.jpg
-broadwinged.mp3,Oecanthus latipennis,Broad-winged tree cricket,Wavelength/broadwinged.png,Images/broadwinged.jpg
-narrowwinged.mp3,Oecanthus niveus,Narrow-winged tree cricket,Wavelength/narrowwinged.png,Images/narrowwinged.jpg
-fourspottedtree.mp3,Oecanthus quadripunctatus,Four-spotted tree cricket,Wavelength/fourspottedtree.png,Images/fourspottedtree.jpg
-Say's.mp3,Anaxipha exigua,Say’s trig,Wavelength/Say's.png,Images/say's.jpg
-pinkspotted.mp3,Anaxipha rosamacula,Pink-spotted trig,Wavelength/pinkspotted.png,Images/pinkspotted.jpg
-slowtinkling.mp3,Anaxipha tinnulenta,Slow-tinkling trig,Wavelength/slowtinkling.png,Images/slowtinkling.jpg
-columbian.mp3,Cyrtoxipha columbiana,Columbian trig,Wavelength/columbian.png,Images/columbian.jpg
+filename,species,common ,Wavelength,Images,Location
+northmole.mp3,Neocurtilla hexadactyla,Northern mole cricket,Wavelength/northmole.png,Images/northernmole.jpg,Location/Neocurtilla_hexadactyla.gif
+southmole.mp3,Neoscapteriscus borellii,Southern mole cricket,Wavelength/southmole.png,Images/southernmole.jpg,Location/Neoscapteriscus_borellii.jpg
+shorttail.mp3,Anurogryllus arboreus,Common short-tailed cricket,Wavelength/shorttail.png,Images/shorttail.jpg,Location/Anurogryllus_arboreus.gif
+housecricket.mp3,Acheta domesticus,House cricket,Wavelength/housecricket.png,Images/housecricket.jpg,Location/Acheta_domesticus.jpg
+southwood.mp3,Gryllus fultoni,Southern wood cricket,Wavelength/southwood.png,Images/southernwood.jpg,Location/Gryllus_fultoni.jpg
+southefield.mp3,Gryllus rubens,Southeastern field cricket,Wavelength/southefield.png,Images/southefield.jpg,Location/Gryllus_rubens.jpg
+southefasttrilling.mp3,Gryllus texensis,Southeast fast trilling cricket,Wavelength/southefasttrilling.png,Images/southefasttrilling.jpg,Location/Gryllus_texensis.jpg
+easternstriped.mp3,Miogryllus saussurei,Eastern striped cricket,Wavelength/easternstriped.png,Images/easternstriped.jpg,Location/Miogryllus_saussurei.jpg
+japaneseburrowing.mp3,Velarifictorus micado,Japanese burrowing cricket,Wavelength/japaneseburrowing.png,Images/japaneseburrowing.jpg,Location/Velarifictorus_micado.jpg
+restlessbush.mp3,Hapithus agitator,Restless bush cricket,Wavelength/restlessbush.png,Images/restlessbush.jpg,Location/Hapithus_agitator.jpg
+jumpingbush.mp3,Orocharis saltator,Jumping bush cricket,Wavelength/jumpingbush.png,Images/jumpingbush.jpg,Location/Orocharis_saltator.jpg
+syncopatedscaly.mp3,Cycloptilum comprehendens,Syncopated scaly cricket,Wavelength/syncopatedscaly.png, Images/syncopatedscaly.jpg,Location/Cycloptilum_comprehendens.gif
+scudder.mp3,Cycloptilum squamosum,Scudder’s scaly cricket,Wavelength/scudder.png,Images/scudder.jpg,Location/Cycloptilum_squamosum.gif
+forectscaly.mp3,Cycloptilum trigonipalpum,Forest scaly cricket ,Wavelength/forectscaly.png,Images/forestscaly.jpg,Location/Cycloptilum_trigonipalpum.gif
+greyground.mp3,Allonemobius griseus,Gray ground cricket,Wavelength/greyground.png,Images/greyground.jpg,Location/Allonemobius_griseus.jpg
+choctawgro.mp3,Allonemobius shalontaki,Choctaw ground cricket,Wavelength/choctawground.png,Images/choctaw.jpg,Location/Allonemobius_shalontaki.jpg
+carolinaground.mp3,Eunemobius carolinus,Carolina ground cricket ,Wavelength/carolineground.png,Images/carolina.jpg,Location/Eunemobius_carolinus.gif
+cubanground.mp3,Neonemobius cubensis,Cuban ground cricket,Wavelength/cubanground.png,Images/cubanground.jpg,Location/Neonemobius_cubensis.jpg
+mormonground.mp3,Neonemobius mormonius,Mormon ground cricket,Wavelength/mormonground.png,Images/mormonground.jpg,Location/Neonemobius_mormonius.jpg
+twospottedtree.mp3,Neoxabea bipunctata,Two-spotted tree cricket,Wavelength/twospottedtree.png,Images/twospottedtree.jpg,Location/Neoxabea_bipunctata.gif
+prarietree.mp3,Oecanthus argentinus,Prairie tree cricket,Wavelength/prarietree.png,Images/prarietree.jpg,Location/Oecanthus_argentinus.gif
+fastcalling.mp3,Oecanthus celerinictus,Fast-calling tree cricket,Wavelength/fastcalling.png,Images/fastcalling.jpg,Location/Oecanthus_celerinictus.gif
+Davis's.mp3,Oecanthus exclamationis,Davis’s tree cricket,Wavelength/Davis's.png,Images/Davis's.jpg,Location/Oecanthus_exclamationis.jpg
+snowytree.mp3,Oecanthus fultoni,Snowy tree cricket,Wavelength/snowytree.png,Images/snowytree.jpg,Location/Oecanthus_fultoni.gif
+broadwinged.mp3,Oecanthus latipennis,Broad-winged tree cricket,Wavelength/broadwinged.png,Images/broadwinged.jpg,Location/Oecanthus_latipennis.gif
+narrowwinged.mp3,Oecanthus niveus,Narrow-winged tree cricket,Wavelength/narrowwinged.png,Images/narrowwinged.jpg,Location/Oecanthus_niveus.gif
+fourspottedtree.mp3,Oecanthus quadripunctatus,Four-spotted tree cricket,Wavelength/fourspottedtree.png,Images/fourspottedtree.jpg,Location/Oecanthus_quadripunctatu.jpg
+Say's.mp3,Anaxipha exigua,Say’s trig,Wavelength/Say's.png,Images/say's.jpg,Location/Anaxipha_exigua.jpg
+pinkspotted.mp3,Anaxipha rosamacula,Pink-spotted trig,Wavelength/pinkspotted.png,Images/pinkspotted.jpg,Location/Anaxipha_rosamacula.gif
+slowtinkling.mp3,Anaxipha tinnulenta,Slow-tinkling trig,Wavelength/slowtinkling.png,Images/slowtinkling.jpg,Location/Anaxipha_tinnulenta.jpg
+columbian.mp3,Cyrtoxipha columbiana,Columbian trig,Wavelength/columbian.png,Images/columbian.jpg,Location/Cyrtoxipha_columbiana.jpg
